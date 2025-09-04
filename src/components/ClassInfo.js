@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react-native';
 import Svg, { Path, Text as SvgText, Circle } from 'react-native-svg';
 import { SafeAreaView } from 'react-native-safe-area-context'; 
+import { useRoute } from '@react-navigation/native';
 
 const COLORS = {
   primary: 'green', // Green for boys
@@ -58,7 +59,9 @@ const dummyData = {
   attendanceRate: 95,
 };
 
-const ClassInfo = () => {
+const ClassInfo = ({ navigation }) => {
+  const route = useRoute();
+  const { grade } = route.params; 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalData, setModalData] = useState([]);
@@ -117,6 +120,20 @@ const ClassInfo = () => {
     </View>
   );
 
+  const renderGenderText = (letter) => {
+    let bgColor
+    if (letter === "M") {    
+        bgColor = 'green'
+    }else{
+        bgColor = 'red'
+    }
+    return(<Text style={ {   backgroundColor: bgColor,  borderRadius: 50,width: 30,height: 30,textAlign: "center",
+      textAlignVertical: "center",color: "white",fontWeight: "bold",}}>
+          {letter}
+    </Text>)
+  }   
+ 
+
   const renderStudentItem = ({ item, index }) => (
     <View style={styles.tableRow}>
       <Text style={styles.tableCell}>{index + 1}</Text>
@@ -125,60 +142,62 @@ const ClassInfo = () => {
         <Text style={styles.idText}>(ID: {item.studentId})</Text>
       </View>
       <Text style={styles.tableCell}>{item.age}</Text>
-      <Text style={styles.tableCell}>{item.gender}</Text>
+      <View style={styles.tableCell}>
+        {renderGenderText(item.gender)}
+      </View>
     </View>
   );
 
   const renderListItem = ({ item }) => {
     switch (item.type) {
       case 'heading':
-        return <Text style={styles.heading}>{dummyData.className}</Text>;
+        return <Text style={styles.heading}>Grade {grade}</Text>;
       case 'gender':
         return (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Gender Distribution</Text>
-<View style={styles.pieContainer}>
-  <Svg height="200" width="200" viewBox="0 0 100 100">
-    {pieData.map((segment) => (
-      segment.value > 0 && (
-        <Path
-          key={segment.label}
-          d={describeArc(50, 50, 45, segment.startAngle, segment.endAngle)}
-          fill={segment.color}
-        />
-      )
-    ))}
-    
-    {/* Add a circle in the center to create the hollow effect */}
-    <Circle
-      cx="50"
-      cy="50"
-      r="20" // Adjust the radius to control the size of the hollow center
-      fill={COLORS.background} // Match the background color
-    />
+            <View style={styles.pieContainer}>
+              <Svg height="200" width="200" viewBox="0 0 100 100">
+                {pieData.map((segment) => (
+                  segment.value > 0 && (
+                    <Path
+                      key={segment.label}
+                      d={describeArc(50, 50, 45, segment.startAngle, segment.endAngle)}
+                      fill={segment.color}
+                    />
+                  )
+                ))}
+                
+                {/* Add a circle in the center to create the hollow effect */}
+                <Circle
+                  cx="50"
+                  cy="50"
+                  r="20" // Adjust the radius to control the size of the hollow center
+                  fill={COLORS.background} // Match the background color
+                />
 
-    {/* Labels inside slices */}
-    {pieData.map((segment) => {
-      if (segment.value > 0) {
-        const pos = textPosition(segment);
-        return (
-          <SvgText
-            key={segment.label}
-            x={pos.x}
-            y={pos.y}
-            textAnchor="middle"
-            dy=".3em"
-            fontSize="6"
-            fill="#FFF"
-          >
-            {`${segment.label}\n${segment.value}`}
-          </SvgText>
-        );
-      }
-      return null;
-    })}
-  </Svg>
-</View>
+                {/* Labels inside slices */}
+                {pieData.map((segment) => {
+                  if (segment.value > 0) {
+                    const pos = textPosition(segment);
+                    return (
+                      <SvgText
+                        key={segment.label}
+                        x={pos.x}
+                        y={pos.y}
+                        textAnchor="middle"
+                        dy=".3em"
+                        fontSize="6"
+                        fill="#FFF"
+                      >
+                        {`${segment.label}\n${segment.value}`}
+                      </SvgText>
+                    );
+                  }
+                  return null;
+                })}
+              </Svg>
+            </View>
 
             <Text style={styles.totalText}>Total Students: {totalStudents}</Text>
           </View>
@@ -235,7 +254,12 @@ const ClassInfo = () => {
               <Text style={styles.tableCell}>Age</Text>
               <Text style={styles.tableCell}>Gender</Text>
             </View>
-            {dummyData.students.map((student, index) => renderStudentItem({ item: student, index }))}
+            {dummyData.students.map((student, index) => (
+              <View key={student.id}>
+                {renderStudentItem({ item: student, index })}
+              </View>
+            ))}
+
           </View>
         );
       default:

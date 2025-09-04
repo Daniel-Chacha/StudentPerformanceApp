@@ -63,7 +63,7 @@ export const apiService = {
 
 // Mock data for development and testing
 const getMockClassProfile = () => ({
-  className: 'Grade 1A',
+  className: 'Grade 1',
   totalStudents: 25,
   strands: [
     {

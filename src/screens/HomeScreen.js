@@ -1,117 +1,442 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { 
+  View, 
+  Text, 
+  ScrollView, 
+  StyleSheet, 
+  TouchableOpacity, 
+  Dimensions,
+  StatusBar 
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { COLORS, FONT_SIZES, SPACING } from "../utils/constants";
+import { FONT_SIZES } from "../utils/constants";
+
+const { width, height } = Dimensions.get('window');
+
+// Enhanced Design System
+const COLORS = {
+  primary: 'hsl(216.923 56% 18%)',
+  primaryLight: 'hsl(216.923 56% 28%)',
+  background: '#F5F5F5',
+  backgroundSecondary: '#F5FEFD',
+  surface: '#334155',
+  surfaceLight: '#475569',
+  textPrimary: '#1e293b',
+  textSecondary: '#334155',
+  textMuted: '#475569',
+  white: '#ffffff',
+  shadow: 'rgba(0, 0, 0, 0.3)',
+  overlay: 'rgba(0, 0, 0, 0.1)',
+};
+
+const TYPOGRAPHY = {
+  hero: 32,
+  heading: 28,
+  title: 24,
+  subtitle: 20,
+  body: 16,
+  caption: 14,
+  small: 12,
+  light: '300',
+  regular: '400',
+  medium: '500',
+  semibold: '600',
+  bold: '700',
+  extrabold: '800',
+  black: '900',
+};
+
+const SPACING = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+  xxxl: 64,
+};
+
+const RADIUS = {
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  xxl: 24,
+  full: 999,
+};
 
 const HomeScreen = ({ navigation }) => {
   const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const handleGradeSelect = (grade) => {
-    // Navigate to ClassOverviewScreen with the selected grade
     navigation.navigate('ClassOverview', { grade });
   };
 
-  const renderGradeButton = (grade) => {
+  const renderGradeButton = (grade, index) => {
     return (
       <TouchableOpacity
         key={grade}
         style={styles.gradeButton}
         onPress={() => handleGradeSelect(grade)}
-        activeOpacity={0.7}
+        activeOpacity={0.8}
       >
-        <Text style={styles.gradeButtonText}>{grade}</Text>
+        <View style={styles.gradeButtonInner}>
+          <View style={styles.gradeButtonBackground} />
+          <Text style={styles.gradeButtonText}>{grade}</Text>
+          <View style={styles.gradeButtonGlow} />
+        </View>
       </TouchableOpacity>
     );
   };
 
+  const renderFloatingShape = (shapeStyle, key) => (
+    <View key={key} style={[styles.floatingShape, shapeStyle]} />
+  );
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      > 
-        {/* Main Heading */}
-        <View style={styles.headerContainer}>
-          <Text style={styles.mainHeading}>CLASS PERFORMANCE OVERVIEW</Text>
+    <>
+      <View style={styles.container}>
+        {/* Background with gradient simulation */}
+        <View style={styles.backgroundGradient}>
+          {/* Floating decorative elements */}
+          {renderFloatingShape(styles.shape1, 'shape1')}
+          {renderFloatingShape(styles.shape2, 'shape2')}
+          {renderFloatingShape(styles.shape3, 'shape3')}
+          {renderFloatingShape(styles.shape4, 'shape4')}
         </View>
 
-        {/* Grade Selection Section */}
-        <View style={styles.selectionContainer}>
-          <Text style={styles.instructionText}>Select the grade :</Text>
-          
-          <View style={styles.gradesGrid}>
-            {grades.map(renderGradeButton)}
+        <SafeAreaView style={styles.safeArea}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+            bounces={true}
+          >
+            {/* Header Section */}
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>EduTrack Pro</Text>
+              <Text style={styles.headerSubtitle}>Advanced Analytics Platform</Text>
+            </View>
+
+            {/* Grade Selection Section */}
+            <View style={styles.selectionContainer}>
+              <View style={styles.instructionContainer}>
+                <View style={styles.titleDecoration}>
+                  <View style={styles.titleLine} />
+                  <Text style={styles.instructionText}>CLASS PERFORMANCE</Text>
+                  <View style={styles.titleLine} />
+                </View>
+                <Text style={styles.instructionSubtext}>
+                  Select a grade level to view detailed performance analytics
+                </Text>
+              </View>
+
+              <View style={styles.gradesGrid}>
+                {grades.map((grade, index) => renderGradeButton(grade, index))}
+              </View>
+            </View>
+          </ScrollView>
+
+          {/* Enhanced Footer */}
+          <View style={styles.footer}>
+            <View style={styles.footerGradient}>
+              <View style={styles.footerContent}>
+                {/* Stats Section */}
+                <View style={styles.footerStats}>
+                  <View style={styles.statItem}>
+                    <Text style={styles.statNumber}>9</Text>
+                    <Text style={styles.statLabel}>Grades</Text>
+                  </View>
+                  
+                  <View style={styles.statDivider} />
+                  
+                  <View style={styles.statItem}>
+                    <Text style={styles.statNumber}>24/7</Text>
+                    <Text style={styles.statLabel}>Access</Text>
+                  </View>
+                  
+                  <View style={styles.statDivider} />
+                  
+                  <View style={styles.statItem}>
+                    <Text style={styles.statNumber}>∞</Text>
+                    <Text style={styles.statLabel}>Insights</Text>
+                  </View>
+                </View>
+                
+                {/* Copyright */}
+                <Text style={styles.footerCopyright}>
+                  © 2024 EduTrack Pro. Empowering education through data.
+                </Text>
+              </View>
+            </View>
           </View>
-        </View>
-      </ScrollView> 
-    </SafeAreaView>
+        </SafeAreaView>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background || '#F5F5F5',
+    position: 'relative',
+    backgroundColor: COLORS.background,
   },
+  
+  // Background and floating elements
+  backgroundGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: COLORS.background,
+    overflow: 'hidden',
+  },
+  
+  floatingShape: {
+    position: 'absolute',
+    opacity: 0.06,
+  },
+  
+  shape1: {
+    top: 100,
+    left: -50,
+    width: 200,
+    height: 200,
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.xl,
+    transform: [{ rotate: '45deg' }],
+  },
+  
+  shape2: {
+    top: 300,
+    right: -80,
+    width: 150,
+    height: 150,
+    backgroundColor: COLORS.primary,
+    borderRadius: 75,
+  },
+  
+  shape3: {
+    bottom: 200,
+    left: width / 2 - 50,
+    width: 100,
+    height: 100,
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.lg,
+    transform: [{ rotate: '30deg' }],
+  },
+  
+  shape4: {
+    bottom: 400,
+    right: 50,
+    width: 120,
+    height: 120,
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.lg,
+    transform: [{ rotate: '-15deg' }],
+  },
+
+  safeArea: {
+    flex: 1,
+    position: 'relative',
+    zIndex: 1,
+  },
+  
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: SPACING?.lg || 24,
-    paddingVertical: SPACING?.xl || 32,
+    paddingHorizontal: SPACING.lg,
+    paddingTop: SPACING.xl,
+    paddingBottom: SPACING.md,
   },
-  headerContainer: {
+  
+  // Header Styles
+  header: {   
     alignItems: 'center',
-    marginBottom: SPACING?.xxl || 40,
-    paddingVertical: SPACING?.lg || 24,
+    marginBottom: SPACING.lg,
+    // paddingTop: SPACING.md,
   },
-  mainHeading: {
-    fontSize: FONT_SIZES?.header || 28,
-    fontWeight: 'bold',
-    color: COLORS?.textPrimary || '#333333',
-    textAlign: 'center',
+  
+  headerTitle: {
+    fontSize: TYPOGRAPHY.hero,
+    fontWeight: TYPOGRAPHY.black,
+    color: COLORS.textPrimary,
+    letterSpacing: 0.5,
+    // marginBottom: SPACING.xs,
+  },
+  
+  headerSubtitle: {
+    fontSize: TYPOGRAPHY.caption,
+    color: COLORS.textSecondary,
+    fontWeight: TYPOGRAPHY.medium,
     letterSpacing: 1,
-    textTransform: 'uppercase',
   },
+
+  // Selection Section
   selectionContainer: {
     flex: 1,
     alignItems: 'center',
+    paddingBottom: SPACING.xl,
   },
+  
+  instructionContainer: {
+    alignItems: 'center',
+    marginBottom: SPACING.xl,
+    width: '100%',
+  },
+  
+  titleDecoration: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // marginBottom: SPACING.lg,
+    width: '100%',
+  },
+  
+  titleLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: COLORS.primary,
+    opacity: 0.3,
+  },
+  
   instructionText: {
-    fontSize: FONT_SIZES?.xlarge || 18,
-    color: COLORS?.textPrimary || '#333333',
-    marginBottom: SPACING?.xl || 32,
-    fontWeight: '600',
+    fontSize: TYPOGRAPHY.title,
+    color: COLORS.textPrimary,
+    fontWeight: TYPOGRAPHY.bold,
+    marginHorizontal: SPACING.md,
+    textAlign: 'center',
+    letterSpacing: 1,
   },
+  
+  instructionSubtext: {
+    fontSize: TYPOGRAPHY.body,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    fontWeight: TYPOGRAPHY.regular,
+    maxWidth: width * 0.8,
+    lineHeight: 22,
+    paddingHorizontal: SPACING.md,
+  }, 
+  
   gradesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: SPACING?.md || 16,
-    maxWidth: 300,
+    gap: SPACING.lg,
+    maxWidth: 350,
   },
+  
   gradeButton: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: COLORS?.primary || '#2196F3',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 15,
+  },
+  
+  gradeButtonInner: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
-    borderWidth: 2,
-    borderColor: COLORS?.surface || '#FFFFFF',
-    transform: [{ scale: 1 }],
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: COLORS.primary,
   },
+  
+  gradeButtonBackground: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: COLORS.primary,
+    opacity: 0.9,
+  },
+  
   gradeButtonText: {
-    fontSize: FONT_SIZES?.title || 24,
-    fontWeight: 'bold',
-    color: COLORS?.surface || '#FFFFFF',
+    fontSize: TYPOGRAPHY.title,
+    fontWeight: TYPOGRAPHY.black,
+    color: COLORS.white,
     textAlign: 'center',
+    zIndex: 2,
+  },
+  
+  gradeButtonGlow: {
+    position: 'absolute',
+    width: '60%',
+    height: '60%',
+    borderRadius: 30,
+    backgroundColor: COLORS.white,
+    opacity: 0.15,
+    top: '20%',
+    left: '20%',
+  },
+
+  // Footer Styles
+  footer: {
+    marginTop: 'auto',
+  },
+  
+  footerGradient: {
+    backgroundColor: COLORS.backgroundSecondary,
+    borderTopLeftRadius: RADIUS.xxl,
+    borderTopRightRadius: RADIUS.xxl,
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: -6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 15,
+    paddingTop: SPACING.md,
+  },
+  
+  footerContent: {
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.lg,
+    alignItems: 'center',
+  },
+  
+  footerStats: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: SPACING.lg,
+    paddingHorizontal: SPACING.md,
+  },
+  
+  statItem: {
+    alignItems: 'center',
+    paddingHorizontal: SPACING.lg,
+  },
+  
+  statNumber: {
+    fontSize: TYPOGRAPHY.subtitle,
+    fontWeight: TYPOGRAPHY.black,
+    color: COLORS.primary,
+    marginBottom: 2,
+  },
+  
+  statLabel: {
+    fontSize: TYPOGRAPHY.caption,
+    color: COLORS.textSecondary,
+    fontWeight: TYPOGRAPHY.medium,
+  },
+  
+  statDivider: {
+    width: 1,
+    height: 32,
+    backgroundColor: COLORS.textMuted,
+    opacity: 0.4,
+  },
+  
+  footerCopyright: {
+    fontSize: TYPOGRAPHY.caption,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    fontWeight: TYPOGRAPHY.regular,
+    opacity: 0.8,
+    lineHeight: 18,
   },
 });
 

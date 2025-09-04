@@ -23,7 +23,7 @@ const StudentsResultsButton = ({ navigation, strand, students }) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#1A2B43',
+    backgroundColor: 'hsl(216.923 56% 18%)',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,

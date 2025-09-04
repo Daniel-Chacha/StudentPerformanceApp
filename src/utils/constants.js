@@ -27,28 +27,28 @@ export const COMPETENCE_LEVELS = {
 };
 
 // Learning Strands (Subject Areas)
-export const LEARNING_STRANDS = [
-  {
-    name: 'Letter Identification',
-    description: 'Recognizing and identifying letters',
-    icon: '🔤',
-  },
-  {
-    name: 'Letter Naming',
-    description: 'Correctly naming letters when shown',
-    icon: '📝',
-  },
-  {
-    name: 'Letter Formation',
-    description: 'Proper handwriting and letter construction',
-    icon: '✍️',
-  },
-  {
-    name: 'Phonemic Awareness',
-    description: 'Understanding letter sounds and phonics',
-    icon: '🔊',
-  },
-];
+// export const LEARNING_STRANDS = [
+//   {
+//     name: 'Letter Identification',
+//     description: 'Recognizing and identifying letters',
+//     icon: '🔤',
+//   },
+//   {
+//     name: 'Letter Naming',
+//     description: 'Correctly naming letters when shown',
+//     icon: '📝',
+//   },
+//   {
+//     name: 'Letter Formation',
+//     description: 'Proper handwriting and letter construction',
+//     icon: '✍️',
+//   },
+//   {
+//     name: 'Phonemic Awareness',
+//     description: 'Understanding letter sounds and phonics',
+//     icon: '🔊',
+//   },
+// ];
 
 // App Theme Colors
 export const COLORS = {

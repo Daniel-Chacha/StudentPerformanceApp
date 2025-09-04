@@ -9,10 +9,15 @@ import { COLORS, SPACING, FONT_SIZES } from '../utils/constants';
 import { Info } from 'lucide-react-native';
 import { useEffect, useState } from "react";
 import Constants from "expo-constants";
+import CompetenceAnalysisComponent from '../components/CompetenceAnalysisComponent';
+import { useRoute } from '@react-navigation/native';
 
 const ClassOverviewScreen = ({ navigation }) => {
-  const {loading, error, searchQuery, setSearchQuery, classProfile, getFilteredStudents, getStudentsByStrand, setSelectedStudent,} = useApp();
+  const route = useRoute();
+  const { grade } = route.params;  // ✅ Access the grade passed in
+  // const {loading, error, searchQuery, setSearchQuery, classProfile, getFilteredStudents, getStudentsByStrand, setSelectedStudent,} = useApp();
   const [strands, setStrands] = useState([]);
+  const [allStudents, setAllStudents ]  = useState([]);
   const [fetching, setFetching] = useState(true);
 
   const getBaseURL = () => {
@@ -47,7 +52,25 @@ const ClassOverviewScreen = ({ navigation }) => {
     }
   };
 
+  getAllStudents = async() =>{
+    try{
+      const response = await fetch(`${getBaseURL()}/students`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      // console.log("DATA", data)
+      setAllStudents(data || [])
+    }catch (error) {
+      console.error("Error fetching strands:", error);
+    } finally {
+      setFetching(false);
+    }
+  }
+
+  getAllStudents()
   getStrands();
+
 }, []);
 
   if (fetching) {
@@ -67,26 +90,22 @@ const ClassOverviewScreen = ({ navigation }) => {
     });
   };
 
-  const renderStrandCards = () => {
-    return strands.map((strand) => {
-      // const studentsInStrand = getStudentsByStrand(strand.name);
-      const filteredStudents = strand.students.filter((student) =>
-        student.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      return (
-        <StrandCard
-          key={strand.strandId}
-          strand={strand.strand}
-          students={filteredStudents}
-          progress={strand.workCovered}
-          onStudentPress={handleStudentPress}
-          navigation={navigation} // Pass navigation prop
-        />
-      );
-    });
-  };
+ const renderStrandCards = () => {
+  return strands.map((strand) => {
+    return (
+      <StrandCard
+        key={strand.strandId}
+        strand={strand.strand}
+        students={strand.students}  // No filtering, pass all students
+        progress={strand.workCovered}
+        onStudentPress={handleStudentPress}
+        navigation={navigation} // Pass navigation prop
+      />
+    );
+  });
+};
 
-  if (fetching || (loading && !classProfile)) {
+  if (fetching ) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
@@ -97,18 +116,18 @@ const ClassOverviewScreen = ({ navigation }) => {
     );
   }
 
-  if (error) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>⚠️ {error}</Text>
-          <Text style={styles.errorSubtext}>
-            Please check your connection and try again
-          </Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <SafeAreaView style={styles.container}>
+  //       <View style={styles.errorContainer}>
+  //         <Text style={styles.errorText}>⚠️ {error}</Text>
+  //         <Text style={styles.errorSubtext}>
+  //           Please check your connection and try again
+  //         </Text>
+  //       </View>
+  //     </SafeAreaView>
+  //   );
+  // }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -117,29 +136,21 @@ const ClassOverviewScreen = ({ navigation }) => {
         <View style={styles.header}>
           <View>
             <Text style={styles.title}>
-              {classProfile?.className || 'Class Performance Overview.'}
+              Grade {grade}
             </Text>
             <Text style={styles.subtitle}>
-              {classProfile?.totalStudents || 0} Students
+              {allStudents.length} Students
             </Text>
           </View>
 
           <TouchableOpacity style={styles.classInfoButton}
-          onPress={() => navigation.navigate("ClassInfo")}
+          onPress={() => navigation.navigate("ClassInfo", { grade })}
           >
             <Info color="#FFFFFF" size={20} style={styles.infoIcon} />
             <Text style={styles.classInfoText}>Info.</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Search Bar */}
-        {/* <View style={styles.searchContainer}>
-          <SearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholder="Search students..."
-          />
-        </View> */}
+      
         {/* Mastery Key Reference */}
         <View style={styles.masteryKeyContainer}>
           <MasteryKeyReference />
@@ -149,6 +160,9 @@ const ClassOverviewScreen = ({ navigation }) => {
           <Text style={styles.sectionTitle}>Learning Strands</Text>
           {renderStrandCards()}
         </View>
+
+          <CompetenceAnalysisComponent  data={strands} />
+
         {/* Footer spacing */}
         <View style={styles.footer} />
       </ScrollView>
@@ -214,7 +228,7 @@ subtitle: {
 },
 
   classInfoButton: {
-    backgroundColor: '#1A2B43',
+    backgroundColor:'hsl(216.923 56% 18%)',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
