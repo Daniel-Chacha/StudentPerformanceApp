@@ -9,7 +9,8 @@ import {
   StatusBar 
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FONT_SIZES } from "../utils/constants";
+import { SPACING, TYPOGRAPHY } from '../utils/constants';
+import { RADIUS } from '../utils/constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -29,41 +30,6 @@ const COLORS = {
   overlay: 'rgba(0, 0, 0, 0.1)',
 };
 
-const TYPOGRAPHY = {
-  hero: 32,
-  heading: 28,
-  title: 24,
-  subtitle: 20,
-  body: 16,
-  caption: 14,
-  small: 12,
-  light: '300',
-  regular: '400',
-  medium: '500',
-  semibold: '600',
-  bold: '700',
-  extrabold: '800',
-  black: '900',
-};
-
-const SPACING = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
-  xxxl: 64,
-};
-
-const RADIUS = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 20,
-  xxl: 24,
-  full: 999,
-};
 
 const HomeScreen = ({ navigation }) => {
   const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9];

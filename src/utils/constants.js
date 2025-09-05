@@ -26,43 +26,21 @@ export const COMPETENCE_LEVELS = {
   },
 };
 
-// Learning Strands (Subject Areas)
-// export const LEARNING_STRANDS = [
-//   {
-//     name: 'Letter Identification',
-//     description: 'Recognizing and identifying letters',
-//     icon: '🔤',
-//   },
-//   {
-//     name: 'Letter Naming',
-//     description: 'Correctly naming letters when shown',
-//     icon: '📝',
-//   },
-//   {
-//     name: 'Letter Formation',
-//     description: 'Proper handwriting and letter construction',
-//     icon: '✍️',
-//   },
-//   {
-//     name: 'Phonemic Awareness',
-//     description: 'Understanding letter sounds and phonics',
-//     icon: '🔊',
-//   },
-// ];
-
 // App Theme Colors
 export const COLORS = {
   mainPrimary: '#1A2B43',
   primary: '#2196F3',
   secondary: '#0c0808ff',
   background: '#F5F5F5',
-  surface: '#FFFFFF',
+  surface: '#F5FEFD',
   textPrimary: '#333333',
   textSecondary: '#666666',
   border: '#E0E0E0',
   success: '#4CAF50',
   warning: '#FFB347',
-  error: '#FF4444',
+  error: '#FF4444',  
+  primary_boy: 'green',
+  primary_girl: 'red',
 };
 
 // Typography
@@ -112,4 +90,30 @@ export const API_CONFIG = {
   timeout: 10000,
   retries: 3,
   retryDelay: 1000,
+};
+
+export const TYPOGRAPHY = {
+  hero: 32,
+  heading: 28,
+  title: 24,
+  subtitle: 20,
+  body: 16,
+  caption: 14,
+  small: 12,
+  light: '300',
+  regular: '400',
+  medium: '500',
+  semibold: '600',
+  bold: '700',
+  extrabold: '800',
+  black: '900',
+};
+
+export const RADIUS = {
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  xxl: 24,
+  full: 999,
 };

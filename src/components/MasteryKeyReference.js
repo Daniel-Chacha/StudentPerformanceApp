@@ -15,7 +15,6 @@ const MasteryKeyReference = () => {
         </View>
         <View style={styles.levelInfo}>
           <Text style={styles.levelMeaning}>{competence.meaning}</Text>
-          {/* <Text style={styles.levelDescription}>{competence.description}</Text> */}
         </View>
       </View>
     );
@@ -23,11 +22,11 @@ const MasteryKeyReference = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Competence Key Reference</Text> */}
         <TouchableOpacity 
           style={styles.toggleButton}
           onPress={() => setShowCompetencyKey(!showCompetencyKey)}
         >
+          {/* toggle the Competence key reference */}
           <Text style={styles.toggleButtonText}>
             {showCompetencyKey ? 'Hide' : 'Show'} Competence Key Reference
           </Text>
@@ -53,7 +52,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: COLORS.border,
-    // marginBottom: SPACING.sm,
     marginTop: 5,
   },
     // Toggle Button Styles

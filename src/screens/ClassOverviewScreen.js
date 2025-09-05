@@ -1,8 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useApp } from '../context/AppContext';
-import SearchBar from '../components/SearchBar';
 import MasteryKeyReference from '../components/MasteryKeyReference';
 import StrandCard from '../components/StrandCard'; // Adjust path as needed
 import { COLORS, SPACING, FONT_SIZES } from '../utils/constants';
@@ -11,15 +9,17 @@ import { useEffect, useState } from "react";
 import Constants from "expo-constants";
 import CompetenceAnalysisComponent from '../components/CompetenceAnalysisComponent';
 import { useRoute } from '@react-navigation/native';
+import { TYPOGRAPHY } from '../utils/constants';
 
 const ClassOverviewScreen = ({ navigation }) => {
   const route = useRoute();
-  const { grade } = route.params;  // ✅ Access the grade passed in
-  // const {loading, error, searchQuery, setSearchQuery, classProfile, getFilteredStudents, getStudentsByStrand, setSelectedStudent,} = useApp();
+  const { grade } = route.params;  // Access the grade passed in
+
   const [strands, setStrands] = useState([]);
   const [allStudents, setAllStudents ]  = useState([]);
   const [fetching, setFetching] = useState(true);
 
+  // Function to automatically get the url for the host computer where the server is running
   const getBaseURL = () => {
   const debuggerHost =
     Constants.expoGoConfig?.debuggerHost ||
@@ -36,6 +36,7 @@ const ClassOverviewScreen = ({ navigation }) => {
 };
 
   useEffect(() => {
+    // Function to fetch strands and assign them to a usestate
   const getStrands = async () => {
     try {
       const response = await fetch(`${getBaseURL()}/class_profile`);
@@ -52,6 +53,7 @@ const ClassOverviewScreen = ({ navigation }) => {
     }
   };
 
+  // Function to fetch students data and assign them to a usestate
   getAllStudents = async() =>{
     try{
       const response = await fetch(`${getBaseURL()}/students`);
@@ -96,10 +98,10 @@ const ClassOverviewScreen = ({ navigation }) => {
       <StrandCard
         key={strand.strandId}
         strand={strand.strand}
-        students={strand.students}  // No filtering, pass all students
+        students={strand.students}  //  pass all students
         progress={strand.workCovered}
         onStudentPress={handleStudentPress}
-        navigation={navigation} // Pass navigation prop
+        navigation={navigation} // Pass the navigation prop
       />
     );
   });
@@ -115,19 +117,6 @@ const ClassOverviewScreen = ({ navigation }) => {
       </SafeAreaView>
     );
   }
-
-  // if (error) {
-  //   return (
-  //     <SafeAreaView style={styles.container}>
-  //       <View style={styles.errorContainer}>
-  //         <Text style={styles.errorText}>⚠️ {error}</Text>
-  //         <Text style={styles.errorSubtext}>
-  //           Please check your connection and try again
-  //         </Text>
-  //       </View>
-  //     </SafeAreaView>
-  //   );
-  // }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -163,8 +152,10 @@ const ClassOverviewScreen = ({ navigation }) => {
 
           <CompetenceAnalysisComponent  data={strands} />
 
-        {/* Footer spacing */}
-        <View style={styles.footer} />
+        {/* Copyright Footer */}
+        <Text style={styles.footerCopyright}>
+          © 2024 EduTrack Pro. Empowering education through data.
+        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -266,8 +257,16 @@ subtitle: {
     color: COLORS.textPrimary,
     marginBottom: SPACING.md,
   },
-  footer: {
-    height: SPACING.xl,
+
+    footerCopyright: {
+    fontSize: TYPOGRAPHY.caption,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    fontWeight: TYPOGRAPHY.regular,
+    opacity: 0.8,
+    width: '85%',
+    marginTop: 20,
+    marginHorizontal: 'auto'
   },
 });
 

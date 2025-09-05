@@ -7,6 +7,8 @@ import {
   Dimensions,
   TouchableOpacity 
 } from "react-native";
+import { TYPOGRAPHY } from '../utils/constants';
+import { SPACING } from '../utils/constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -30,27 +32,6 @@ const COLORS = {
   AE: 'orange', // Orange for Approaching Expectations
   BE: 'red', // Blue for Below Expectations
 };
-
-const TYPOGRAPHY = {
-  title: 24,
-  subtitle: 20,
-  body: 16,
-  caption: 14,
-  small: 12,
-  bold: '700',
-  semibold: '600',
-  medium: '500',
-  regular: '400',
-};
-
-const SPACING = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-};
-
 
 
 const CompetenceAnalysisComponent = ({ data }) => {
@@ -145,13 +126,6 @@ const CompetenceAnalysisComponent = ({ data }) => {
                 <Text style={styles.strandLabel} numberOfLines={2}>
                   {strand.strand}
                 </Text>
-                
-                {/* Work covered indicator */}
-                {/* <View style={styles.workCoveredContainer}>
-                  <Text style={styles.workCoveredText}>
-                    {strand.workCovered}%
-                  </Text>
-                </View> */}
               </View>
             );
           })}

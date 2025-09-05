@@ -1,7 +1,6 @@
 import React, { use } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import ProgressBar from './ProgressBar';
-import StudentCard from './StudentCard';
 import { COLORS, SPACING, FONT_SIZES } from '../utils/constants';
 import StrandPerformance from './StrandPerformance';
 import StudentsResultsButton from '../components/buttons/StudentsResultsButton';
@@ -9,38 +8,8 @@ import { useState, useEffect } from 'react';
 
 const StrandCard = ({ strand, students, progress, onStudentPress, navigation }) => {
   const [competenceData, setCompetence] = useState({ BE: 0, AE: 0, ME: 0, EE: 0 })
-  const renderStudentList = () => {
-    if (students.length === 0) {
-      return (
-        <View style={styles.noStudentsContainer}>
-          <Text style={styles.noStudentsText}>No students found</Text>
-        </View>
-      );
-    }
-    return (
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.studentsList}
-        contentContainerStyle={styles.studentsListContent}
-      >
-        {students.map((student, index) => {
-          const strandData = student.strands?.[strand];
-          return (
-            <StudentCard
-              key={`${student.id}-${strand}`}
-              student={student}
-              competenceLevel={strandData?.level || 'BE'}
-              progress={strandData?.progress || 0}
-              onPress={() => onStudentPress(student)}
-              style={index > 0 ? styles.studentCardSpacing : null}
-            />
-          );
-        })}
-      </ScrollView>
-    );
-  };
 
+  // Function to count the number of times each competence initial occurs and return a % of each with respect to the total count
   function calculateCompetenceDistribution(students) {
     const counts = {};
     let total = students.length;
@@ -60,7 +29,7 @@ const StrandCard = ({ strand, students, progress, onStudentPress, navigation }) 
 
 
   useEffect(() =>{
-    const data = calculateCompetenceDistribution(students);
+    const data = calculateCompetenceDistribution(students);  //calls the function and pass the necessary data
     setCompetence(data)
     // console.log("STUDENTS:", students)
     // console.log("COMPETENCE COUNT:", data)

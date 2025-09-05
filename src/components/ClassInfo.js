@@ -3,36 +3,14 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react
 import Svg, { Path, Text as SvgText, Circle } from 'react-native-svg';
 import { SafeAreaView } from 'react-native-safe-area-context'; 
 import { useRoute } from '@react-navigation/native';
+import { TYPOGRAPHY } from '../utils/constants';
+import { SPACING } from '../utils/constants';
+import { FONT_SIZES } from '../utils/constants';
+import { COLORS } from '../utils/constants';
 
-const COLORS = {
-  primary: 'green', // Green for boys
-  secondary: 'red', // Blue for girls
-  background: '#F5F5F5',
-  surface: '#FFFFFF',
-  textPrimary: '#212121',
-  textSecondary: '#757575',
-  border: '#E0E0E0',
-  error: '#F44336',
-  warning: '#FF9800',
-  success: '#4CAF50',
-};
 
-const SPACING = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-};
 
-const FONT_SIZES = {
-  small: 12,
-  medium: 14,
-  large: 16,
-  xlarge: 20,
-  title: 24,
-};
-
+// Use dummy data since no actual data is currently available
 const dummyData = {
   className: 'Grade 1',
   boys: 15,
@@ -55,7 +33,7 @@ const dummyData = {
     { id: '4', name: 'Bob Brown', studentId: 'ST004', age: 7, gender: 'M' },
     { id: '5', name: 'Charlie Davis', studentId: 'ST005', age: 6, gender: 'M' },
   ],
-  averagePerformance: 85,
+  averagePerformance: 'AE',
   attendanceRate: 95,
 };
 
@@ -69,10 +47,11 @@ const ClassInfo = ({ navigation }) => {
   const totalStudents = dummyData.boys + dummyData.girls;
 
   const segments = [
-    { label: 'Boys', value: dummyData.boys, color: COLORS.primary },
-    { label: 'Girls', value: dummyData.girls, color: COLORS.secondary },
+    { label: 'Boys', value: dummyData.boys, color: COLORS.primary_boy },
+    { label: 'Girls', value: dummyData.girls, color: COLORS.primary_girl },
   ];
 
+  // Draws the pie chart showing the gender distribution in the class
   const pieTotal = segments.reduce((sum, seg) => sum + seg.value, 0) || 1;
   let startAngle = 0;
   const pieData = segments.map((seg) => {
@@ -120,12 +99,13 @@ const ClassInfo = ({ navigation }) => {
     </View>
   );
 
+  // Function to show the gender initial inside a colored circle unique for each gender 
   const renderGenderText = (letter) => {
     let bgColor
     if (letter === "M") {    
-        bgColor = 'green'
+        bgColor = COLORS.primary_boy
     }else{
-        bgColor = 'red'
+        bgColor = COLORS.primary_girl
     }
     return(<Text style={ {   backgroundColor: bgColor,  borderRadius: 50,width: 30,height: 30,textAlign: "center",
       textAlignVertical: "center",color: "white",fontWeight: "bold",}}>
@@ -202,7 +182,7 @@ const ClassInfo = ({ navigation }) => {
             <Text style={styles.totalText}>Total Students: {totalStudents}</Text>
           </View>
         );
-      case 'teacher':
+      case 'teacher':    // Teacher Details
         return (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Class Teacher Details</Text>
@@ -212,7 +192,7 @@ const ClassInfo = ({ navigation }) => {
             </View>
           </View>
         );
-      case 'health':
+      case 'health':   // Show number of students with critical health conditions. Clickable to display modal
         return (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Health Overview</Text>
@@ -234,12 +214,12 @@ const ClassInfo = ({ navigation }) => {
             </View>
           </View>
         );
-      case 'performance':
+      case 'performance':     // Show's the class' average performance  and attendance rate
         return (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Class Performance Summary</Text>
             <View style={styles.card}>
-              <Text style={styles.cardText}>Average Performance: {dummyData.averagePerformance}%</Text>
+              <Text style={styles.cardText}>Average Performance: {dummyData.averagePerformance}</Text>
               <Text style={styles.cardText}>Attendance Rate: {dummyData.attendanceRate}%</Text>
             </View>
           </View>
@@ -285,6 +265,14 @@ const ClassInfo = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
       />
+      
+      {/* Copyright Footer */}
+      <Text style={styles.footerCopyright}>
+        © 2024 EduTrack Pro. Empowering education through data.
+      </Text>
+
+
+      {/* Modal to display students with critical health conditions and disabilities */}
       <Modal
         visible={modalVisible}
         transparent={true}
@@ -461,7 +449,7 @@ idText: {
     color: COLORS.textSecondary,
   },
   closeButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#142848',
     borderRadius: 8,
     padding: SPACING.md,
     alignItems: 'center',
@@ -472,6 +460,17 @@ idText: {
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+
+      footerCopyright: {
+      fontSize: TYPOGRAPHY.caption,
+      color: COLORS.textSecondary,
+      textAlign: 'center',
+      fontWeight: TYPOGRAPHY.regular,
+      opacity: 0.8,
+      width: '85%',
+      marginTop: 20,
+      marginHorizontal: 'auto'
+    },
 });
 
 export default ClassInfo;

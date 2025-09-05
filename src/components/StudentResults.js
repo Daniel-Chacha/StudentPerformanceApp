@@ -24,6 +24,7 @@ const StudentResults = ({ route }) => {
     return competenceMap[competence] || { color: '#9E9E9E', label: 'N/A', bgColor: '#F5F5F5' };
   };
 
+  // Function that return a background color to be used in place for a profile picture
   const getInitialsBgColor = (name) => {
     const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#FF9FF3', '#54A0FF', '#5F27CD'];
     const charCode = name?.charCodeAt(0) || 0;
@@ -195,13 +196,6 @@ const StudentResults = ({ route }) => {
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <Text style={styles.subjectTitle}>{subjectName}</Text>
-          {/* <View style={styles.statsContainer}>
-            <Text style={styles.statNumber}>{filteredAndSortedStudents.length}</Text>
-            <Text style={styles.statLabel}>
-              {filteredAndSortedStudents.length === 1 ? 'Student' : 'Students'}
-              {searchQuery || competenceFilter !== 'All' ? ' (Filtered)' : ''}
-            </Text>
-          </View> */}
         </View>
       </View>
 

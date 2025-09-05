@@ -2,11 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { AppProvider } from './src/context/AppContext';
 import HomeScreen from './src/screens/HomeScreen';
 import ClassOverviewScreen from './src/screens/ClassOverviewScreen';
-import StudentDetailsScreen from './src/screens/StudentDetailsScreen';
-import { Import } from 'lucide-react-native';
 import StudentResults from './src/components/StudentResults';
 import ClassInfo from './src/components/ClassInfo';
 
@@ -14,7 +11,6 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <AppProvider>
       <NavigationContainer>
         <StatusBar style="auto" />
         <Stack.Navigator
@@ -44,21 +40,13 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name="StudentDetails"
-            component={StudentDetailsScreen}
-            options={({ route }) => ({
-              title: route.params?.studentName || 'Student Details',
-            })}
-          />
-          <Stack.Screen
             name="StudentResults"
             component={StudentResults}
-            options={{ title: 'Student Results' }}
+            options={{ title: 'Strand Results' }}
           />
           <Stack.Screen name="ClassInfo" component={ClassInfo} options={{ title: 'Class Info' }}/>
 
         </Stack.Navigator>
       </NavigationContainer>
-    </AppProvider>
   );
 }
